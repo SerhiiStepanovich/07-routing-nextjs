@@ -66,3 +66,12 @@
   display: inline-block;
   background-color: transparent;
 }
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  align-self: flex-end;
+}

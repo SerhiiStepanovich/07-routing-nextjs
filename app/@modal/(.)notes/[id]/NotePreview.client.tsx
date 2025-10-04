@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
+import { useRouter } from "next/navigation";
 import styles from "@/components/NotePreview/NotePreview.module.css";
 
 interface NotePreviewProps {
@@ -9,6 +10,8 @@ interface NotePreviewProps {
 }
 
 export default function NotePreview({ id }: NotePreviewProps) {
+  const router = useRouter();
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
@@ -21,9 +24,13 @@ export default function NotePreview({ id }: NotePreviewProps) {
 
   return (
     <div className={styles.preview}>
+      <button onClick={() => router.back()} className={styles.closeButton}>
+        ✕ Закрити
+      </button>
       <h2>{data.title}</h2>
       <p>{data.content}</p>
-      <p>{data.createdAt}</p>
+      <p>Created: {data.createdAt}</p>
+      {data.tag && <p>Tag: {data.tag}</p>}
     </div>
   );
 }
