@@ -2,6 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
+import { useRouter } from "next/navigation";
+import Modal from "@/components/Modal/Modal";
 import styles from "./NotePreview.module.css";
 
 interface NotePreviewProps {
@@ -9,6 +11,9 @@ interface NotePreviewProps {
 }
 
 export default function NotePreview({ id }: NotePreviewProps) {
+  const router = useRouter();
+  const closeModal = () => router.back();
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
@@ -20,10 +25,13 @@ export default function NotePreview({ id }: NotePreviewProps) {
   if (!data) return <p>Note not found</p>;
 
   return (
-    <div className={styles.preview}>
-      <h2>{data.title}</h2>
-      <p>{data.content}</p>
-      <p>{data.createdAt}</p>
-    </div>
+    <Modal isOpen={true} onClose={closeModal}>
+      <div className={styles.preview}>
+        <h2>{data.title}</h2>
+        <p>{data.content}</p>
+        <p>Created: {data.createdAt}</p>
+        {data.tag && <p>Tag: {data.tag}</p>}
+      </div>
+    </Modal>
   );
 }

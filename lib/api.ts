@@ -26,7 +26,7 @@ export async function fetchNotes(
   page: number,
   perPage: number,
   search?: string,
-  tag?: string
+  tag?: NoteTag
 ): Promise<FetchNotesResponse> {
   const params: Record<string, string | number> = { page, perPage };
   if (search) params.search = search;

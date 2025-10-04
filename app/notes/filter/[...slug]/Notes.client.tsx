@@ -11,8 +11,13 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 import type { FetchNotesResponse } from "@/lib/api";
+import type { NoteTag } from "@/types/note";
 
 const PER_PAGE = 12;
+
+function isNoteTag(value: string): value is NoteTag {
+  return ["Todo", "Work", "Personal", "Meeting", "Shopping"].includes(value);
+}
 
 interface NotesClientProps {
   tag: string;
@@ -21,24 +26,19 @@ interface NotesClientProps {
 const NotesClient: React.FC<NotesClientProps> = ({ tag }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-
   const [isModalOpen, setModalOpen] = useState(false);
 
   const debouncedSearch = useDebounce(search, 500);
+
+  const validTag = tag === "All" ? undefined : isNoteTag(tag) ? tag : undefined;
 
   const { data, isLoading, isError, error, isFetching } =
     useQuery<FetchNotesResponse>({
       queryKey: [
         "notes",
-        { page, perPage: PER_PAGE, search: debouncedSearch, tag },
+        { page, perPage: PER_PAGE, search: debouncedSearch, tag: validTag },
       ],
-      queryFn: () =>
-        fetchNotes(
-          page,
-          PER_PAGE,
-          debouncedSearch,
-          tag === "All" ? undefined : tag
-        ),
+      queryFn: () => fetchNotes(page, PER_PAGE, debouncedSearch, validTag),
       placeholderData: (prev) => prev,
     });
 

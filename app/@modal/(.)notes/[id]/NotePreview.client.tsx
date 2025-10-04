@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
-import styles from "./NotePreview.module.css";
+import styles from "@/components/NotePreview/NotePreview.module.css";
 
 interface NotePreviewProps {
   id: string;
