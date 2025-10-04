@@ -40,8 +40,12 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
           <div className={styles.footer}>
             <span className={styles.tag}>{note.tag}</span>
 
-            <Link href={`/notes/${note.id}`} className={styles.link}>
-              View details
+            <Link
+              href={`/notes/${note.id}`}
+              as={`/notes/${note.id}`}
+              className={styles.link}
+            >
+              Preview
             </Link>
 
             <button
