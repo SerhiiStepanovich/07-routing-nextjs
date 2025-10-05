@@ -6,11 +6,10 @@ import {
 } from "@tanstack/react-query";
 import NoteModalClient from "../NoteModal.client";
 
-export default async function NoteModal({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function NoteModal(
+  props: Promise<{ params: { id: string } }>
+) {
+  const { params } = await props;
   const { id } = params;
 
   const queryClient = new QueryClient();

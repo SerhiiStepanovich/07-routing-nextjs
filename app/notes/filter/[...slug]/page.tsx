@@ -8,14 +8,17 @@ import {
 } from "@tanstack/react-query";
 
 interface Props {
-  params: { slug?: string[] };
+  params: Promise<{ slug: string[] }>;
   searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 export default async function Page({ params, searchParams }: Props) {
-  const tag = params.slug?.[0] ?? "All";
+  const resolvedParams = await params;
+  const tag = resolvedParams.slug?.[0] ?? "All";
+
   const query =
     typeof searchParams?.query === "string" ? searchParams.query : "";
+
   const page =
     typeof searchParams?.page === "string"
       ? parseInt(searchParams.page, 10)
